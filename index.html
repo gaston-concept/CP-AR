@@ -1,14 +1,23 @@
-<!DOCTYPE html>
-<html>
+	<!DOCTYPE html>
+<html lang="en">
 <head>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/aframe-gltf-model-component@1.0.0/dist/aframe-gltf-model-component.min.js"></script>
-    <script src="https://rawgit.com/jeromeetienne/ar.js/2.1.1/aframe/build/aframe-ar.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modelo 3D en AR</title>
 </head>
-<body style="margin: 0px; overflow: hidden;">
-    <a-scene embedded arjs>
-        <a-entity gltf-model="model.glb" position="0 0 0" scale="1 1 1"></a-entity>
-        <a-camera position="0 0 0"></a-camera>
-    </a-scene>
+<body>
+  <!-- Model Viewer para visualizar el modelo 3D -->
+  <model-viewer 
+    src="Prueba.glb" 
+    alt="Modelo 3D en Realidad Aumentada" 
+    ar 
+    auto-rotate 
+    camera-controls>
+  </model-viewer>
+
+  <!-- Script necesario para que funcione el model-viewer -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </body>
 </html>
+
+
