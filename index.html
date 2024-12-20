@@ -1,33 +1,72 @@
 <!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Modelo AR</title>
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Model Viewer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.158.0/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@google/model-viewer@latest/dist/model-viewer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/jsm/webxr/VRButton.js"></script>
     <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-      }
-      model-viewer {
-        width: 100vw;
-        height: 100vh;
-      }
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            z-index: 10;
+        }
     </style>
-  </head>
-  <body>
-    <model-viewer
-      src="https://github.com/gaston-concept/CP-AR/blob/main/Prueba_estante.glb"
-  ar
-  ar-modes="scene-viewer webxr quick-look"
-  camera-controls
-  auto-rotate
-  environment-image="neutral"
-  shadow-intensity="0.5"
-  style="height: 100vh; width: 100vw;"
-  alt="Modelo 3D en AR">
-    </model-viewer>
-  </body>
+</head>
+<body>
+    <div id="info">To start AR, enable camera access and tap the button below.</div>
+    <script>
+        // Setup scene, camera, and renderer
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.xr.enabled = true; // Enable XR
+        document.body.appendChild(renderer.domElement);
+
+        // Add VR Button
+        document.body.appendChild(THREE.VRButton.createButton(renderer));
+
+        // Add lighting
+        const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
+        scene.add(light);
+
+        // Load the .glb model
+        const loader = new THREE.GLTFLoader();
+        const glbModelUrl = 'https://tu-repositorio.github.io/tu-archivo.glb'; // URL de tu modelo
+        loader.load(
+            glbModelUrl,
+            function (gltf) {
+                gltf.scene.scale.set(1, 1, 1); // Escala del modelo
+                gltf.scene.position.set(0, 0, 0); // Posición del modelo
+                scene.add(gltf.scene);
+            },
+            undefined,
+            function (error) {
+                console.error('Error al cargar el modelo:', error);
+            }
+        );
+
+        // Add AR session
+        function animate() {
+            renderer.setAnimationLoop(() => {
+                renderer.render(scene, camera);
+            });
+        }
+        animate();
+    </script>
+</body>
 </html>
+
 
