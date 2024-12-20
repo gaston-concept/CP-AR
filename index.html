@@ -46,8 +46,8 @@
             glbModelUrl,
             function (gltf) {
                 // Configurar modelo: escala, posición y agregar a la escena
-                gltf.scene.scale.set(1, 1, 1); // Ajustar escala si es necesario
-                gltf.scene.position.set(0, 0, -1); // Frente a la cámara
+                gltf.scene.scale.set(0.1, 0.1, 0.1); // Ajustar escala si es necesario
+                gltf.scene.position.set(0, 0, -3); // Frente a la cámara
                 scene.add(gltf.scene);
             },
             undefined,
