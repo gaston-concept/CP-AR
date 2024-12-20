@@ -29,7 +29,7 @@
         document.body.appendChild(THREE.VRButton.createButton(renderer));
 
         // Add lighting
-        const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
+        const light = new THREE.HemisphereLight(0xffffff, 0x444444, 2); // Más intensidad
         scene.add(light);
 
         // Load the .glb model
@@ -38,8 +38,8 @@
         loader.load(
             glbModelUrl,
             function (gltf) {
-                gltf.scene.scale.set(1, 1, 1); // Escala del modelo
-                gltf.scene.position.set(0, 0, 0); // Posición del modelo
+                gltf.scene.scale.set(1, 1, 1); // Ajusta la escala si es necesario
+                gltf.scene.position.set(0, 0, -1); // Coloca el modelo frente a la cámara
                 scene.add(gltf.scene);
             },
             undefined,
@@ -48,7 +48,11 @@
             }
         );
 
-        // Add AR session
+        // Camera setup
+        camera.position.set(0, 1.5, 3); // Posición inicial de la cámara
+        camera.lookAt(0, 0, 0); // Haz que mire hacia el centro de la escena
+
+        // Animation loop
         function animate() {
             renderer.setAnimationLoop(() => {
                 renderer.render(scene, camera);
