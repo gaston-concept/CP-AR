@@ -17,29 +17,37 @@
 </head>
 <body>
     <script>
-        // Setup scene, camera, and renderer
+        // Configuración inicial de escena, cámara y renderizador
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.xr.enabled = true; // Enable XR
+        renderer.xr.enabled = true; // Habilitar XR
         document.body.appendChild(renderer.domElement);
 
-        // Add VR Button
+        // Agregar el botón para iniciar AR/VR
         document.body.appendChild(THREE.VRButton.createButton(renderer));
 
-        // Add lighting
-        const light = new THREE.HemisphereLight(0xffffff, 0x444444, 2); // Más intensidad
-        scene.add(light);
+        // Configuración de luces
+        // Luz direccional simulando el sol
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(5, 10, 7.5); // Posición de la luz
+        directionalLight.castShadow = true; // Sombras (opcional si tu modelo soporta sombras)
+        scene.add(directionalLight);
 
-        // Load the .glb model
+        // Luz ambiental para iluminación uniforme
+        const ambientLight = new THREE.AmbientLight(0x404040, 1.5); // Más intensidad para mayor visibilidad
+        scene.add(ambientLight);
+
+        // Cargar el modelo .glb
         const loader = new THREE.GLTFLoader();
         const glbModelUrl = 'https://tu-repositorio.github.io/tu-archivo.glb'; // URL de tu modelo
         loader.load(
             glbModelUrl,
             function (gltf) {
-                gltf.scene.scale.set(1, 1, 1); // Ajusta la escala si es necesario
-                gltf.scene.position.set(0, 0, -1); // Coloca el modelo frente a la cámara
+                // Configurar modelo: escala, posición y agregar a la escena
+                gltf.scene.scale.set(1, 1, 1); // Ajustar escala si es necesario
+                gltf.scene.position.set(0, 0, -1); // Frente a la cámara
                 scene.add(gltf.scene);
             },
             undefined,
@@ -48,11 +56,11 @@
             }
         );
 
-        // Camera setup
-        camera.position.set(0, 1.5, 3); // Posición inicial de la cámara
-        camera.lookAt(0, 0, 0); // Haz que mire hacia el centro de la escena
+        // Posición inicial de la cámara
+        camera.position.set(0, 1.5, 3); // Elevar la cámara y alejarla un poco
+        camera.lookAt(0, 0, 0); // Apuntar al centro de la escena
 
-        // Animation loop
+        // Loop de animación
         function animate() {
             renderer.setAnimationLoop(() => {
                 renderer.render(scene, camera);
@@ -62,4 +70,3 @@
     </script>
 </body>
 </html>
-
